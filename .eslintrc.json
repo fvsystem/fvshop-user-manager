@@ -22,13 +22,22 @@
     ],
     "rules": {
         "prettier/prettier": "error",
+        "no-useless-constructor": "off",
+        "no-underscore-dangle": [
+            "error",
+            {
+                "enforceInClassFields": false,
+                "allowAfterThis": true
+            }
+        ],
         "import/extensions": [
             "error",
             "ignorePackages",
             {
                 "ts": "never"
             }
-        ]
+        ],
+        "import/prefer-default-export": "off"
     },
     "settings": {
         "import/resolver": {
