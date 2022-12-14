@@ -23,6 +23,8 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strict": true
   },
   "include": [
     "src"

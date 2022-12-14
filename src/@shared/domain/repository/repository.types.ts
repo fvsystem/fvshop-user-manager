@@ -1,3 +1,9 @@
+/* eslint-disable import/no-cycle */
+import { Entity } from '../entity';
+import { RepositoryInterface } from './repository.interface';
+import { SearchParams } from './repository.search-params';
+import { SearchResult } from './repository.search.result';
+
 export type SortDirection = 'asc' | 'desc';
 
 export type SearchProps<Filter = string> = {

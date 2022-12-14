@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// eslint-disable-next-line import/no-cycle
 import { SearchProps, SortDirection } from './repository.types';
 
 export class SearchParams<Filter = string> {
