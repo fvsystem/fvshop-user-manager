@@ -21,7 +21,8 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "noImplicitAny": false,
   },
   "include": [
     "src"

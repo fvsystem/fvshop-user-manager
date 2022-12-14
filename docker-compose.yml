@@ -6,5 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-      - ./:/home/node/app
-      - /app/node_modules
+      - workspace:/home/node/app
+volumes:
+  workspace:
