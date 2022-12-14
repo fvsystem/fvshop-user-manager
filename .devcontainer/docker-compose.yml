@@ -23,7 +23,7 @@ services:
 
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
-      - workspace_node_modules:/home/node/app/node_modules
+      - ./:/home/node/app:cached
       # Uncomment the next line to use Docker from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker-compose for details.
       # - /var/run/docker.sock:/var/run/docker.sock 
 
@@ -32,5 +32,3 @@ services:
       #   - SYS_PTRACE
       # security_opt:
       #   - seccomp:unconfined
-volumes:
-  workspace_node_modules:
