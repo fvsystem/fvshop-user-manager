@@ -5,18 +5,19 @@
     "module": "commonjs",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "paths": {
+      "@root/*": [
+        "./*"
+      ],
+      "@root": [
+        "./index.ts"
+      ]
+    },
     "rootDir": "src",
     "allowJs": true,
     "declaration": true,
-    "paths": {
-      "@shared/*": [
-        "@shared/*"
-      ],
-      "@shared": [
-        "@shared/index.ts"
-      ]
-    },
-    "outDir": "./dist",
+    "sourceMap": true,
+    "outDir": "./dist/esm",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
