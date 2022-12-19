@@ -1,4 +1,4 @@
-import { NameValueObject, RoleValueObject, UserEntity } from '#user-manager';
+import { NameValueObject, RoleValueObject, UserEntity } from '@root';
 
 describe('UserEntity', () => {
   it('should create a valid user', () => {

@@ -1,4 +1,4 @@
-import { NameValidatorFactoryZod, NameValidatorZod } from '#user-manager';
+import { NameValidatorFactoryZod, NameValidatorZod } from '@root';
 
 describe('NameValidatorFactoryZod', () => {
   it('should create a validator of roles', () => {

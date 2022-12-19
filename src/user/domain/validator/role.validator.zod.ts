@@ -1,6 +1,6 @@
 import { ValidatorFieldsZod } from '@fvsystem/fvshop-shared-entities';
 import { z } from 'zod';
-import { RoleProps } from '#user-manager';
+import { RoleProps } from '@root';
 
 export class RoleValidatorZod extends ValidatorFieldsZod<RoleProps> {
   constructor() {

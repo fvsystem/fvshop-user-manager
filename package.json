@@ -1,6 +1,6 @@
 {
   "name": "@fvsystem/fvshop-user-manager",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "User Manager system for FVShop",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -13,22 +13,15 @@
     },
     "./package.json": "./package.json"
   },
-  "imports": {
-    "#user-manager": {
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/cjs/index.d.ts",
-      "import": "./dist/esm/index.js"
-    }
-  },
   "scripts": {
     "pretest": "tsc --noEmit",
     "test": "jest",
     "prepublish": "npm run build",
     "build": "npm run build:esm && npm run build:cjs",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs && tscpaths -p tsconfig.json -s ./src -o ./dist/cjs",
+    "build:esm": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist/esm",
     "commit": "cz",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/#user-manager/utils/index.ts' -e ts"
+    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/@root/utils/index.ts' -e ts"
   },
   "repository": {
     "type": "git",

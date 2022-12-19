@@ -1,4 +1,4 @@
-import { NameValueObject } from '#user-manager';
+import { NameValueObject } from '@root';
 
 describe('NameValueObject', () => {
   it('should create a valid name', () => {

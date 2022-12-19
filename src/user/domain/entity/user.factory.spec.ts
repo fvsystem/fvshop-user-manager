@@ -4,7 +4,7 @@ import {
   RoleValueObject,
   UserEntity,
   UserEntityFactory,
-} from '#user-manager';
+} from '@root';
 
 describe('UserEntityFactory', () => {
   it('should create an entity of users with uuid when not giving an uuid', () => {
