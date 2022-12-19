@@ -1,12 +1,17 @@
 {
   "name": "@fvsystem/fvshop-user-manager",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "User Manager system for FVShop",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "export": {
     ".": {
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js"
+    },
+    "@user-manager": {
       "require": "./dist/cjs/index.js",
       "types": "./dist/cjs/index.d.ts",
       "import": "./dist/esm/index.js"
