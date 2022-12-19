@@ -1,4 +1,4 @@
-import { NameValidatorZod } from '@root';
+import { NameValidatorZod } from '@user-manager';
 
 export class NameValidatorFactoryZod {
   static create() {

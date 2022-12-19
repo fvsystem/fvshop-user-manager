@@ -1,4 +1,4 @@
-import { RoleValueObject } from '@root';
+import { RoleValueObject } from '@user-manager';
 
 describe('RoleValueObject', () => {
   it('should create a valid role', () => {

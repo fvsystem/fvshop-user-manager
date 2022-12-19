@@ -1,6 +1,6 @@
 import { ValidatorFieldsZod } from '@fvsystem/fvshop-shared-entities';
 import { z } from 'zod';
-import { NameProps } from '@root';
+import { NameProps } from '@user-manager';
 
 export class NameValidatorZod extends ValidatorFieldsZod<NameProps> {
   constructor() {

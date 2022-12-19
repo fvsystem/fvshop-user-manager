@@ -1,4 +1,4 @@
-import { UserValidatorFactoryZod, UserValidatorZod } from '@root';
+import { UserValidatorFactoryZod, UserValidatorZod } from '@user-manager';
 
 describe('UserValidatorFactoryZod', () => {
   it('should create a validator of users', () => {

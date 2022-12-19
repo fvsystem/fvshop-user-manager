@@ -6,10 +6,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "paths": {
-      "@root/*": [
+      "@user-manager/*": [
         "./*"
       ],
-      "@root": [
+      "@user-manager": [
         "./index.ts"
       ]
     },
