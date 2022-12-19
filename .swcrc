@@ -6,7 +6,7 @@
     },
     "baseUrl": "./src",
     "paths": {
-      "@user-manager/*": [
+      "#user-manager/*": [
         "./*"
       ]
     }

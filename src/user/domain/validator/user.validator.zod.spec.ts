@@ -1,4 +1,4 @@
-import { UserValidatorZod } from '@user-manager';
+import { UserValidatorZod } from '#user-manager';
 
 describe('UserValidator', () => {
   it('should validate a valid user', async () => {

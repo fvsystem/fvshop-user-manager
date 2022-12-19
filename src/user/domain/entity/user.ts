@@ -7,7 +7,7 @@ import {
   NameValueObject,
   RoleValueObject,
   UserValidatorFactoryZod,
-} from '@user-manager';
+} from '#user-manager';
 
 export interface UserProps {
   name: NameValueObject;

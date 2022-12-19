@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { UserEntity, UserProps } from '@user-manager';
+import { UserEntity, UserProps } from '#user-manager';
 import { UniqueEntityId } from '@fvsystem/fvshop-shared-entities';
 
 export class UserEntityFactory {
