@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
-import { UserEntity, UserProps } from '@root';
+import { UserProps } from '@root';
 import { UniqueEntityId } from '@fvsystem/fvshop-shared-entities';
+import { UserEntity } from './user';
 
 export class UserEntityFactory {
   static create(props: UserProps, id?: string) {

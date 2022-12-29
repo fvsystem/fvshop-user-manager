@@ -1,4 +1,4 @@
-import { RoleValidatorZod } from '@root';
+import { RoleValidatorZod } from './role.validator.zod';
 
 export class RoleValidatorFactoryZod {
   static create() {

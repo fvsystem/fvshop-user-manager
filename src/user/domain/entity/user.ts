@@ -7,12 +7,12 @@ import {
   NameValueObject,
   RoleValueObject,
   UserValidatorFactoryZod,
-} from '@root';
+} from '@root/user/domain';
 
 export interface UserProps {
   name: NameValueObject;
   email: string;
-  role: RoleValueObject;
+  roles: RoleValueObject[];
 }
 
 export class UserEntity extends Entity<UserProps> {
@@ -21,7 +21,7 @@ export class UserEntity extends Entity<UserProps> {
     UserEntity.validate({ email: props.email });
     this.props.name = props.name;
     this.props.email = props.email;
-    this.props.role = props.role;
+    this.props.roles = props.roles;
   }
 
   get name(): NameValueObject {
@@ -32,11 +32,11 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.email;
   }
 
-  get role(): RoleValueObject {
-    return this.props.role;
+  get roles(): RoleValueObject[] {
+    return this.props.roles;
   }
 
-  static validate(props: Omit<UserProps, 'role' | 'name'>) {
+  static validate(props: Omit<UserProps, 'roles' | 'name'>) {
     const validator = UserValidatorFactoryZod.create();
     const isValid = validator.validate(props);
     if (!isValid) {

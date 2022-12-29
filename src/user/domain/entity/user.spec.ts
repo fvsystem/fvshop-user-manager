@@ -5,13 +5,13 @@ describe('UserEntity', () => {
     const user = new UserEntity({
       name: new NameValueObject({ firstName: 'John', lastName: 'Doe' }),
       email: 'test@test.com',
-      role: new RoleValueObject({ name: 'SalesAdministrator' }),
+      roles: [new RoleValueObject({ name: 'SalesAdministrator' })],
     });
     expect(user.name.firstName).toBe('John');
     expect(user.name.lastName).toBe('Doe');
     expect(user.name.fullName).toBe('John Doe');
     expect(user.email).toBe('test@test.com');
-    expect(user.role.name).toBe('SalesAdministrator');
+    expect(user.roles[0].name).toBe('SalesAdministrator');
   });
 
   it('should not create a user with invalid name', () => {
@@ -20,7 +20,7 @@ describe('UserEntity', () => {
         new UserEntity({
           name: new NameValueObject({ firstName: '', lastName: 'Doe' }),
           email: 'test@test.com',
-          role: new RoleValueObject({ name: 'SalesAdministrator' }),
+          roles: [new RoleValueObject({ name: 'SalesAdministrator' })],
         })
     ).toThrow();
   });
@@ -31,7 +31,7 @@ describe('UserEntity', () => {
         new UserEntity({
           name: new NameValueObject({ firstName: 'John', lastName: 'Doe' }),
           email: 'test@test.com',
-          role: new RoleValueObject({ name: '' }),
+          roles: [new RoleValueObject({ name: '' })],
         })
     ).toThrow();
   });
@@ -42,7 +42,7 @@ describe('UserEntity', () => {
         new UserEntity({
           name: new NameValueObject({ firstName: 'John', lastName: 'Doe' }),
           email: 'asdf',
-          role: new RoleValueObject({ name: 'SalesAdministrator' }),
+          roles: [new RoleValueObject({ name: 'SalesAdministrator' })],
         })
     ).toThrow();
   });

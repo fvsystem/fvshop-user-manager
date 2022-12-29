@@ -12,6 +12,7 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': ['@swc/jest'],
   },
+  coverageDirectory: '../coverage',
   clearMocks: true,
   globals: {
     'ts-jest': {

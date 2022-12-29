@@ -12,13 +12,15 @@ describe('UserEntityFactory', () => {
       firstName: 'John',
       lastName: 'Doe',
     });
-    const role = new RoleValueObject({
-      name: 'SalesAdministrator',
-    });
+    const roles = [
+      new RoleValueObject({
+        name: 'SalesAdministrator',
+      }),
+    ];
     const email = 'test@test.com';
     const entity = UserEntityFactory.create({
       name,
-      role,
+      roles,
       email,
     });
     expect(entity).toBeInstanceOf(UserEntity);
@@ -26,7 +28,7 @@ describe('UserEntityFactory', () => {
     expect(entity.name.lastName).toBe('Doe');
     expect(entity.name.fullName).toBe('John Doe');
     expect(entity.email).toBe('test@test.com');
-    expect(entity.role.name).toBe('SalesAdministrator');
+    expect(entity.roles[0].name).toBe('SalesAdministrator');
     expect(uuidValidate(entity.id)).toBe(true);
   });
 
@@ -35,16 +37,18 @@ describe('UserEntityFactory', () => {
       firstName: 'John',
       lastName: 'Doe',
     });
-    const role = new RoleValueObject({
-      name: 'SalesAdministrator',
-    });
+    const roles = [
+      new RoleValueObject({
+        name: 'SalesAdministrator',
+      }),
+    ];
     const email = 'test@test.com';
     const uuidValue = uuid();
 
     const entity = UserEntityFactory.create(
       {
         name,
-        role,
+        roles,
         email,
       },
       uuidValue
@@ -54,7 +58,7 @@ describe('UserEntityFactory', () => {
     expect(entity.name.lastName).toBe('Doe');
     expect(entity.name.fullName).toBe('John Doe');
     expect(entity.email).toBe('test@test.com');
-    expect(entity.role.name).toBe('SalesAdministrator');
+    expect(entity.roles[0].name).toBe('SalesAdministrator');
     expect(entity.id).toBe(uuidValue);
   });
 
@@ -63,9 +67,11 @@ describe('UserEntityFactory', () => {
       firstName: 'John',
       lastName: 'Doe',
     });
-    const role = new RoleValueObject({
-      name: 'SalesAdministrator',
-    });
+    const roles = [
+      new RoleValueObject({
+        name: 'SalesAdministrator',
+      }),
+    ];
     const email = 'test@test.com';
     const uuidValue = 'invalidUUID';
 
@@ -73,7 +79,7 @@ describe('UserEntityFactory', () => {
       UserEntityFactory.create(
         {
           name,
-          role,
+          roles,
           email,
         },
         uuidValue
@@ -86,9 +92,11 @@ describe('UserEntityFactory', () => {
       firstName: 'John',
       lastName: 'Doe',
     });
-    const role = new RoleValueObject({
-      name: 'SalesAdministrator',
-    });
+    const roles = [
+      new RoleValueObject({
+        name: 'SalesAdministrator',
+      }),
+    ];
     const email = 'a';
     const uuidValue = uuid();
 
@@ -96,7 +104,7 @@ describe('UserEntityFactory', () => {
       UserEntityFactory.create(
         {
           name,
-          role,
+          roles,
           email,
         },
         uuidValue
