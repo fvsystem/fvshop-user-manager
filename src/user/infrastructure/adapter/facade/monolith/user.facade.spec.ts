@@ -67,17 +67,10 @@ class MockUserRepository implements UserRepositoryInterface {
 }
 
 describe('UserFacadeMonolith', () => {
-  it('should get user by id', async () => {
+  it('should get roles by email', async () => {
     const userRepository = new MockUserRepository();
     const userFacade = new UserFacadeMonolith(userRepository);
-    const userFound = await userFacade.findById('1');
-    expect(userFound.name.fullName).toBe(user.name.fullName);
-  });
-
-  it('should get user by email', async () => {
-    const userRepository = new MockUserRepository();
-    const userFacade = new UserFacadeMonolith(userRepository);
-    const userFound = await userFacade.findByEmail('1');
-    expect(userFound.email).toBe(user.email);
+    const rolesFound = await userFacade.getRolesFromEmail(user.email);
+    expect(rolesFound).toEqual(['SalesAdministrator']);
   });
 });

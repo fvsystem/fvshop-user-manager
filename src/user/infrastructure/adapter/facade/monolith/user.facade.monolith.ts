@@ -1,9 +1,6 @@
-import {
-  UserEntity,
-  UserFacadeInterface,
-  UserRepositoryInterface,
-  UserService,
-} from '@root/user/domain';
+import { UserRepositoryInterface, UserService } from '@root/user/domain';
+
+import { UserFacadeInterface } from '@root/user/application';
 
 export class UserFacadeMonolith implements UserFacadeInterface {
   private readonly userRepository: UserRepositoryInterface;
@@ -15,13 +12,8 @@ export class UserFacadeMonolith implements UserFacadeInterface {
     this.userEntity = new UserService(userRepository);
   }
 
-  async findById(id: string): Promise<UserEntity> {
-    const { user } = await this.userEntity.getUserById({ id });
-    return user;
-  }
-
-  async findByEmail(email: string): Promise<UserEntity> {
+  async getRolesFromEmail(email: string): Promise<string[]> {
     const { user } = await this.userEntity.getUserByEmail({ email });
-    return user;
+    return user.roles.map((role) => role.name);
   }
 }
