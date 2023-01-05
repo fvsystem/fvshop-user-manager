@@ -26,6 +26,7 @@
         "no-useless-constructor": "off",
         "no-underscore-dangle": "off",
         "camelcase": "off",
+        "max-classes-per-file": "off",
         "import/no-cycle": "off",
         "class-methods-use-this": "off",
         "import/extensions": [
