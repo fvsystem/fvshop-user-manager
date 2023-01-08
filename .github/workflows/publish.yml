@@ -19,6 +19,7 @@ jobs:
       - run: npm ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: cp .env.test.example .env.test
       - run: npm test
       - run: npm publish
         env:
