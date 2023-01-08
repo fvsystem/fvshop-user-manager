@@ -17,7 +17,6 @@ export async function getAppSequelize(config: ConfigShared): Promise<void> {
     database: 'fvshop',
     models: [UserModelSequelize, RoleUserModelSequelize, RoleModelSequelize],
   });
-  console.log('sequelize', sequelize);
 
   await sequelize.sync();
 }
