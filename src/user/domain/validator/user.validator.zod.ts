@@ -12,5 +12,3 @@ export class UserValidatorZod extends ValidatorFieldsZod<
     });
   }
 }
-
-export default UserValidatorZod;

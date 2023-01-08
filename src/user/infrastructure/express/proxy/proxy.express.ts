@@ -33,7 +33,7 @@ export class GetByIdUseCaseRest {
   }
 }
 
-export class UserFacadeImpleRest implements UserFacadeInterface {
+export class UserFacadeProxyExpress implements UserFacadeInterface {
   getUserByEmail: UseCase<GetByEmailInputProps, GetByEmailOutputProps>;
 
   getUserById: UseCase<GetByIdInputProps, GetByIdOutputProps>;

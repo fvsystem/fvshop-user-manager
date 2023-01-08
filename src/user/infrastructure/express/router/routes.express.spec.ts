@@ -4,7 +4,7 @@ import {
 } from '@fvsystem/fvshop-shared-entities';
 import {
   NameValueObject,
-  RoleValueObject,
+  RoleEntity,
   UserEntity,
   UserRepositoryInterface,
 } from '@root/user/domain';
@@ -23,7 +23,7 @@ const user = new UserEntity(
       lastName: 'Doe',
     }),
     roles: [
-      new RoleValueObject({
+      new RoleEntity({
         name: 'SalesAdministrator',
       }),
     ],
@@ -54,6 +54,14 @@ class MockUserRepository implements UserRepositoryInterface {
 
   async bulkInsert(entities: UserEntity[]): Promise<void> {
     console.log('bulk inserted');
+  }
+
+  async getRoles(id: string): Promise<RoleEntity[]> {
+    return [
+      new RoleEntity({
+        name: 'SalesAdministrator',
+      }),
+    ];
   }
 
   async findById(id: string | UniqueEntityId): Promise<UserEntity> {

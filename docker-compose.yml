@@ -4,6 +4,41 @@ services:
   node:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.express-sequelize
+      secrets:
+        - env
+        - npmrc
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: production
+      FILE_ENV: "/home/node/app/.env"
+    env_file:
+      - .env
+    networks:
+      - app_network
+    ports:
+      - "3000:3000"
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: fvshop
+      POSTGRES_USER: ${DB_USERNAME}
+    env_file:
+      - .env
     volumes:
-      - ./:/home/node/app
+      - ./database/entrypoint.sh:/docker-entrypoint-initdb.d/10_postgis.sh
+    networks:
+      - app_network
+    ports:
+      - "5432:5432"
+networks:
+  app_network:
+    driver: bridge
+
+secrets:
+  env:
+    file: ./.env
+  npmrc:
+    file: ./.npmrc.docker

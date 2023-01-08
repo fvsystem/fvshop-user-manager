@@ -1,11 +1,6 @@
-import {
-  UserEntity,
-  UserRepositoryInterface,
-  RoleValueObject,
-  NameValueObject,
-} from '@root';
-
-import { UserEntityFactory } from '../entity';
+import { UserEntity, UserEntityFactory, RoleEntity } from '../entity';
+import { UserRepositoryInterface } from '../repository';
+import { NameValueObject } from '../value-object';
 
 export interface CreateUserInputDTO {
   firstName: string;
@@ -38,9 +33,7 @@ export class UserService {
   constructor(private readonly userRepository: UserRepositoryInterface) {}
 
   async createUser(input: CreateUserInputDTO): Promise<CreateUserOutputDTO> {
-    const roles = input.roles.map(
-      (role) => new RoleValueObject({ name: role })
-    );
+    const roles = input.roles.map((role) => new RoleEntity({ name: role }));
     const name = new NameValueObject({
       firstName: input.firstName,
       lastName: input.lastName,

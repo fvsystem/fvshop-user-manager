@@ -5,14 +5,14 @@ import {
 } from '@fvsystem/fvshop-shared-entities';
 import {
   NameValueObject,
-  RoleValueObject,
+  RoleEntity,
   UserValidatorFactoryZod,
 } from '@root/user/domain';
 
 export interface UserProps {
   name: NameValueObject;
   email: string;
-  roles: RoleValueObject[];
+  roles: RoleEntity[];
 }
 
 export class UserEntity extends Entity<UserProps> {
@@ -28,12 +28,29 @@ export class UserEntity extends Entity<UserProps> {
     return this.props.name;
   }
 
+  set name(name: NameValueObject) {
+    this.props.name = name;
+  }
+
   get email(): string {
     return this.props.email;
   }
 
-  get roles(): RoleValueObject[] {
+  set email(email: string) {
+    UserEntity.validate({ email });
+    this.props.email = email;
+  }
+
+  get roles(): RoleEntity[] {
     return this.props.roles;
+  }
+
+  addRole(role: RoleEntity) {
+    this.props.roles.push(role);
+  }
+
+  removeRole(role: RoleEntity) {
+    this.props.roles = this.props.roles.filter((r) => r.id !== role.id);
   }
 
   static validate(props: Omit<UserProps, 'roles' | 'name'>) {

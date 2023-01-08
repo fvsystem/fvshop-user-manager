@@ -5,5 +5,3 @@ export class NameValidatorFactoryZod {
     return new NameValidatorZod();
   }
 }
-
-export default NameValidatorFactoryZod;

@@ -1,7 +1,7 @@
 import { validate as uuidValidate, v4 as uuid } from 'uuid';
 import {
   NameValueObject,
-  RoleValueObject,
+  RoleEntity,
   UserEntity,
   UserEntityFactory,
 } from '@root';
@@ -13,7 +13,7 @@ describe('UserEntityFactory', () => {
       lastName: 'Doe',
     });
     const roles = [
-      new RoleValueObject({
+      new RoleEntity({
         name: 'SalesAdministrator',
       }),
     ];
@@ -38,7 +38,7 @@ describe('UserEntityFactory', () => {
       lastName: 'Doe',
     });
     const roles = [
-      new RoleValueObject({
+      new RoleEntity({
         name: 'SalesAdministrator',
       }),
     ];
@@ -68,7 +68,7 @@ describe('UserEntityFactory', () => {
       lastName: 'Doe',
     });
     const roles = [
-      new RoleValueObject({
+      new RoleEntity({
         name: 'SalesAdministrator',
       }),
     ];
@@ -93,7 +93,7 @@ describe('UserEntityFactory', () => {
       lastName: 'Doe',
     });
     const roles = [
-      new RoleValueObject({
+      new RoleEntity({
         name: 'SalesAdministrator',
       }),
     ];

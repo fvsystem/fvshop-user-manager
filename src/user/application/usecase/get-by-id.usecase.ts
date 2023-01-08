@@ -1,4 +1,4 @@
-import { UseCase } from '@fvsystem/fvshop-shared-entities';
+import { log, UseCase } from '@fvsystem/fvshop-shared-entities';
 import { UserRepositoryInterface } from '@root/user/domain';
 import { UserDataDTO, UserDTOMapper } from '../dto';
 
@@ -15,6 +15,7 @@ export class GetByIdUseCase
 {
   constructor(private readonly userRepository: UserRepositoryInterface) {}
 
+  @log('getById')
   async execute(input: GetByIdInputProps): Promise<GetByIdOutputProps> {
     const userDB = await this.userRepository.findById(input.userId);
     return { user: UserDTOMapper.toUserDataDTO(userDB) };

@@ -5,5 +5,3 @@ export class UserValidatorFactoryZod {
     return new UserValidatorZod();
   }
 }
-
-export default UserValidatorFactoryZod;

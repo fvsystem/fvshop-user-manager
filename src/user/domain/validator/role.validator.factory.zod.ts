@@ -5,5 +5,3 @@ export class RoleValidatorFactoryZod {
     return new RoleValidatorZod();
   }
 }
-
-export default RoleValidatorFactoryZod;

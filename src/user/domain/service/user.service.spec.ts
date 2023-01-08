@@ -1,10 +1,7 @@
-import {
-  NotFoundError,
-  UniqueEntityId,
-} from '@fvsystem/fvshop-shared-entities';
-import { UserEntity, UserEntityFactory } from '../entity';
-import { UserRepositoryInterface } from '../repository';
-import { NameValueObject, RoleValueObject } from '../value-object';
+import { NotFoundError } from '@fvsystem/fvshop-shared-entities';
+import { UserEntityFactory, RoleEntity } from '../entity';
+import { UserRepositoryMock } from '../repository/user.repository.mock';
+import { NameValueObject } from '../value-object';
 import { UserService } from './user.service';
 
 const name = new NameValueObject({
@@ -13,7 +10,7 @@ const name = new NameValueObject({
 });
 
 const roles = [
-  new RoleValueObject({
+  new RoleEntity({
     name: 'SalesAdministrator',
   }),
 ];
@@ -24,51 +21,13 @@ const user = UserEntityFactory.create({
   email: 'test@test.com',
 });
 
-class MockUserRepository implements UserRepositoryInterface {
-  sortableFields: string[] = ['email'];
-
-  async findByEmail(email: string): Promise<UserEntity> {
-    if (email === 'noUser') {
-      throw new NotFoundError('User not found');
-    }
-    return user;
-  }
-
-  async insert(entity: UserEntity): Promise<void> {
-    console.log('inserted');
-  }
-
-  async bulkInsert(entities: UserEntity[]): Promise<void> {
-    console.log('bulk inserted');
-  }
-
-  async findById(id: string | UniqueEntityId): Promise<UserEntity> {
-    if (id === 'noUser') {
-      throw new NotFoundError('User not found');
-    }
-    return user;
-  }
-
-  async findAll(): Promise<UserEntity[]> {
-    return [user];
-  }
-
-  async update(entity: UserEntity): Promise<void> {
-    console.log('updated');
-  }
-
-  async delete(id: string | UniqueEntityId): Promise<void> {
-    console.log('deleted');
-  }
-}
-
 describe('UserService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   describe('Create a user', () => {
     it('should create a user', async () => {
-      const userRepository = new MockUserRepository();
+      const userRepository = new UserRepositoryMock(user);
       const userService = new UserService(userRepository);
       const insertSpy = jest.spyOn(userRepository, 'insert');
       const { user: userCreated } = await userService.createUser({
@@ -86,7 +45,7 @@ describe('UserService', () => {
 
   describe('Get a user by email', () => {
     it('should get a user by email', async () => {
-      const userRepository = new MockUserRepository();
+      const userRepository = new UserRepositoryMock(user);
       const userService = new UserService(userRepository);
       const findByEmailSpy = jest.spyOn(userRepository, 'findByEmail');
       const { user: userFound } = await userService.getUserByEmail({
@@ -99,7 +58,7 @@ describe('UserService', () => {
     });
 
     it('should not return a user', async () => {
-      const userRepository = new MockUserRepository();
+      const userRepository = new UserRepositoryMock(user);
       const userService = new UserService(userRepository);
       const findByEmailSpy = jest.spyOn(userRepository, 'findByEmail');
       expect(() =>
@@ -113,7 +72,7 @@ describe('UserService', () => {
 
   describe('Get a user by id', () => {
     it('should get a user by id', async () => {
-      const userRepository = new MockUserRepository();
+      const userRepository = new UserRepositoryMock(user);
       const userService = new UserService(userRepository);
       const findByIdSpy = jest.spyOn(userRepository, 'findById');
       const { user: userFound } = await userService.getUserById({
@@ -126,7 +85,7 @@ describe('UserService', () => {
     });
 
     it('should not return a user', async () => {
-      const userRepository = new MockUserRepository();
+      const userRepository = new UserRepositoryMock(user);
       const userService = new UserService(userRepository);
       const findByIdSpy = jest.spyOn(userRepository, 'findById');
       expect(() =>

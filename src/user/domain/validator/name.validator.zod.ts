@@ -11,5 +11,3 @@ export class NameValidatorZod extends ValidatorFieldsZod<NameProps> {
     });
   }
 }
-
-export default NameValidatorZod;

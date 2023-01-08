@@ -10,5 +10,3 @@ export class RoleValidatorZod extends ValidatorFieldsZod<RoleProps> {
     });
   }
 }
-
-export default RoleValidatorZod;

@@ -1,8 +1,4 @@
-import {
-  NameValueObject,
-  RoleValueObject,
-  UserEntity,
-} from '@root/user/domain';
+import { NameValueObject, RoleEntity, UserEntity } from '@root/user/domain';
 import { UserDTOMapper } from './user-dto.mapper';
 
 describe('UserDTOMapper', () => {
@@ -10,7 +6,7 @@ describe('UserDTOMapper', () => {
     const user = new UserEntity({
       name: new NameValueObject({ firstName: 'John', lastName: 'Doe' }),
       email: 'test@test.com',
-      roles: [new RoleValueObject({ name: 'SalesAdministrator' })],
+      roles: [new RoleEntity({ name: 'SalesAdministrator' })],
     });
     const userDataDTO = UserDTOMapper.toUserDataDTO(user);
     expect(userDataDTO.id).toBe(user.id);
