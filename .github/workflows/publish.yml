@@ -60,7 +60,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ./repository
-          file: ./Dockerfile.express-sequelize
+          file: ./repository/Dockerfile.express-sequelize
           secret-files: id=npmrc,src=./npmrc.docker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
