@@ -22,7 +22,7 @@
     "build:esm": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist/esm",
     "commit": "cz",
     "start-express-sequelize": "node user/infrastructure/app/express-sequelize",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/user/infrastructure/adapter/express/app' -e ts"
+    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/user/infrastructure/app/express-sequelize' -e ts"
   },
   "repository": {
     "type": "git",

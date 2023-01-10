@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 /* eslint-disable no-return-assign */
+import { Dialect } from 'sequelize';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import { getConfigTest } from '../../config';
 // import { Config } from "sequelize/types";
@@ -7,7 +8,7 @@ import { getConfigTest } from '../../config';
 const config = getConfigTest();
 
 const sequelizeOptions: SequelizeOptions = {
-  dialect: config.db.vendor,
+  dialect: config.db.vendor as Dialect,
   host: config.db.host,
   logging: config.db.logging,
 };

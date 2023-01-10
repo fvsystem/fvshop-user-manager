@@ -18,6 +18,7 @@ import { getAppExpress } from '../../express';
 describe('E2E express-sequelize', () => {
   it('should find by email', async () => {
     const config = {
+      nodeEnv: 'test',
       db: {
         vendor: 'sqlite',
         host: ':memory:',
@@ -77,6 +78,7 @@ describe('E2E express-sequelize', () => {
 
   it('should find by id', async () => {
     const config = {
+      nodeEnv: 'test',
       db: {
         vendor: 'sqlite',
         host: ':memory:',

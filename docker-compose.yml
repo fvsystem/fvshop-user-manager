@@ -6,13 +6,11 @@ services:
       context: .
       dockerfile: Dockerfile.express-sequelize
       secrets:
-        - env
         - npmrc
     depends_on:
       - postgres
     environment:
       NODE_ENV: production
-      FILE_ENV: "/home/node/app/.env"
     env_file:
       - .env
     networks:
@@ -38,7 +36,5 @@ networks:
     driver: bridge
 
 secrets:
-  env:
-    file: ./.env
   npmrc:
     file: ./.npmrc.docker

@@ -1,13 +1,27 @@
 /* istanbul ignore file */
 import { config as readEnv } from 'dotenv';
 import { join } from 'path';
+import { z } from 'zod';
+
+const envSchema = z.object({
+  REST_PORT: z.coerce.number().optional(),
+  NODE_ENV: z.string(),
+  DB_VENDOR: z.string(),
+  DB_HOST: z.string(),
+  DB_LOGGING: z.coerce.boolean(),
+  DB_PASSWORD: z.string().optional(),
+  DB_PORT: z.coerce.number().optional(),
+  DB_USERNAME: z.string().optional(),
+  JWT_PUBLIC_KEY: z.string(),
+});
 
 export type ConfigShared = {
+  nodeEnv: string;
   rest: {
     port?: number;
   };
   db: {
-    vendor: any;
+    vendor: string;
     host: string;
     logging: boolean;
     password?: string;
@@ -19,29 +33,26 @@ export type ConfigShared = {
   };
 };
 
-export function makeConfigShared(envFile): ConfigShared {
-  const output = readEnv({ path: envFile });
+export function makeConfigShared(envFile?: string): ConfigShared {
+  readEnv({ path: envFile });
+
+  const env = envSchema.parse(process.env);
 
   return {
+    nodeEnv: env.NODE_ENV,
     rest: {
-      port: output.parsed.REST_PORT
-        ? Number(output.parsed.REST_PORT)
-        : undefined,
+      port: env.REST_PORT ? Number(env.REST_PORT) : undefined,
     },
     db: {
-      vendor: output.parsed.DB_VENDOR as any,
-      host: output.parsed.DB_HOST,
-      logging: output.parsed.DB_LOGGING === 'true',
-      password: output.parsed.DB_PASSWORD
-        ? output.parsed.DB_PASSWORD
-        : undefined,
-      port: output.parsed.DB_PORT ? Number(output.parsed.DB_PORT) : undefined,
-      username: output.parsed.DB_USERNAME
-        ? output.parsed.DB_USERNAME
-        : undefined,
+      vendor: env.DB_VENDOR,
+      host: env.DB_HOST,
+      logging: env.DB_LOGGING,
+      password: env.DB_PASSWORD,
+      port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
+      username: env.DB_USERNAME,
     },
     jwt: {
-      publicKey: output.parsed.JWT_PUBLIC_KEY,
+      publicKey: env.JWT_PUBLIC_KEY,
     },
   };
 }

@@ -21,6 +21,7 @@ describe('AppSequelize', () => {
       sync: mock,
     }));
     const config = {
+      nodeEnv: 'test',
       db: {
         vendor: 'sqlite',
         host: ':memory:',

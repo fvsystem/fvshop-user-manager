@@ -12,9 +12,7 @@ import {
 const logger = new LoggerServiceWinton();
 // init server
 (async () => {
-  const config = makeConfigShared(
-    process.env.FILE_ENV || '../../../../../.env'
-  );
+  const config = makeConfigShared();
   await getAppSequelize(config);
   const userRepository = new UserRepositorySequelize(
     UserModelSequelize,

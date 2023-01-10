@@ -11,9 +11,6 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "env": {
-                "FILE_ENV": "/Users/lucas/fvsystem/fvshop/user-manager/.env"
-            },
             "program": "${workspaceFolder}/dist/esm/user/infrastructure/adapter/express/app",
             "outFiles": [
                 "${workspaceFolder}/dist/esm/**/*.js"

@@ -33,11 +33,6 @@ RUN chmod +x /wait
 
 RUN rm -f .npmrc
 
-ENV FILE_ENV "/home/node/app/.env"
-
-RUN --mount=type=secret,id=env,target=/home/node/app/.env.copy \
-    cp /home/node/app/.env.copy /home/node/app/.env
-
 CMD /wait && npm run start-express-sequelize
 
 
