@@ -61,7 +61,7 @@ jobs:
         with:
           context: ./repository
           file: ./repository/Dockerfile.express-sequelize
-          secret-files: id=npmrc,src=./npmrc.docker
+          secret-files: id=npmrc,src=./repository/npmrc.docker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
