@@ -36,15 +36,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-          cache: 'npm'
-
       - name: Config npmrc
         run: |
-          echo "@fvsystem:registry=https://npm.pkg.github.com" >> ./.npmrc.docker |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ./.npmrc.docker
+          echo "@fvsystem:registry=https://npm.pkg.github.com" >> ./npmrc.docker |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ./npmrc.docker
+
+      - name: Check file
+        run: cat ./npmrc.docker
 
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -64,7 +62,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.express-sequelize
-          secret-files: id=npmrc,src=./.npmrc.docker
+          secret-files: id=npmrc,src=./npmrc.docker
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
