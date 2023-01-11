@@ -4,7 +4,9 @@ WORKDIR /home/node/app
 
 COPY package* .
 
-RUN --mount=type=secret,id=npmrc,target=/home/node/app/.npmrc \
+RUN --mount=type=secret,id=github_token \
+    cat /run/secrets/github_token | sed 's/^/\/\/npm.pkg.github.com\/:_authToken=/' > npmrc.docker && \
+    mv npmrc.docker .npmrc && \
     npm ci --ignore-scripts
 
 
@@ -23,8 +25,10 @@ WORKDIR /home/node/app
 ENV NODE_ENV=production
 
 COPY package* .
-RUN --mount=type=secret,id=npmrc,target=/home/node/app/.npmrc \
-    npm ci --omit=dev --ignore-scripts
+RUN --mount=type=secret,id=github_token \
+    cat /run/secrets/github_token | sed 's/^/\/\/npm.pkg.github.com\/:_authToken=/' > npmrc.docker && \
+    mv npmrc.docker .npmrc && \
+    npm ci --ignore-scripts
 
 COPY --from=builder /home/node/app/dist/cjs .
 

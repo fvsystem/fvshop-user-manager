@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile.express-sequelize
       secrets:
-        - npmrc
+        - github_token
     depends_on:
       - postgres
     environment:
@@ -36,5 +36,5 @@ networks:
     driver: bridge
 
 secrets:
-  npmrc:
-    file: ./.npmrc.docker
+  github_token:
+    file: $HOME/.git/token
