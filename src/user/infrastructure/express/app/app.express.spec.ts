@@ -26,7 +26,7 @@ describe('UserApplicationService', () => {
   });
   it('should get user by email', async () => {
     const response = await request(app)
-      .get('/user/mail')
+      .get('/users')
       .query({ email: 'test@test.com' });
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
@@ -40,7 +40,7 @@ describe('UserApplicationService', () => {
   });
 
   it('should get user by id', async () => {
-    const response = await request(app).get(`/user/${user.id}`);
+    const response = await request(app).get(`/users/${user.id}`);
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
       id: user.id,

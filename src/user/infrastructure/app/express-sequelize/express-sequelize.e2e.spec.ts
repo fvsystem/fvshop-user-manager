@@ -60,7 +60,7 @@ describe('E2E express-sequelize', () => {
     const app = getAppExpress(userRepository);
 
     const response = await request(app)
-      .get('/user/mail')
+      .get('/users')
       .query({ email: 'test@test.com' });
 
     expect(response.status).toBe(200);
@@ -119,7 +119,7 @@ describe('E2E express-sequelize', () => {
 
     const app = getAppExpress(userRepository);
 
-    const response = await request(app).get(`/user/${user.id}`);
+    const response = await request(app).get(`/users/${user.id}`);
 
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({

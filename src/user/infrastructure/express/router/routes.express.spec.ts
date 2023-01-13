@@ -98,28 +98,35 @@ app.use(routes);
 describe('VerifyUserUseCase', () => {
   it('should return user with right email', async () => {
     const response = await request(app)
-      .get('/user/mail')
+      .get('/users')
       .query({ email: 'test@test.com' });
 
     expect(response.status).toBe(200);
     expect(response.body.user.email).toBe('test@test.com');
   });
 
+  it('should return users', async () => {
+    const response = await request(app).get('/users');
+
+    expect(response.status).toBe(200);
+    expect(response.body.users[0].email).toBe('test@test.com');
+  });
+
   it('should return 400 if user does not exist', async () => {
     const response = await request(app)
-      .get('/user/mail')
+      .get('/users')
       .query({ email: 'noUser' });
     expect(response.status).toBe(400);
   });
 
   it('should return 200 if id is valid', async () => {
-    const response = await request(app).get(`/user/${uuidValue}`);
+    const response = await request(app).get(`/users/${uuidValue}`);
     expect(response.status).toBe(200);
     expect(response.body.user.email).toBe('test@test.com');
   });
 
   it('should return 400 if user does not exist', async () => {
-    const response = await request(app).get(`/user/noUser`);
+    const response = await request(app).get(`/users/noUser`);
     expect(response.status).toBe(400);
   });
 });

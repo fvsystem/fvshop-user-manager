@@ -9,8 +9,21 @@ export class RoutesExpressUser {
   addRoutes(router: Router) {
     const userFacade = new UserFacadeImpl(this.userRepository);
 
-    router.get('/user/mail', async (req, res) => {
-      const { email } = req.query;
+    router.get('/users', async (req, res) => {
+      const { email, limit, offset } = req.query;
+      if (!email) {
+        try {
+          const result = await userFacade.getAllUsers.execute({
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+          });
+          res.status(200).json(result);
+        } catch (err) {
+          res.status(400).json(err);
+        }
+        return;
+      }
+
       try {
         const result = await userFacade.getUserByEmail.execute({
           email: email as string,
@@ -21,7 +34,7 @@ export class RoutesExpressUser {
       }
     });
 
-    router.get('/user/:id', async (req, res) => {
+    router.get('/users/:id', async (req, res) => {
       const { id } = req.params;
       try {
         const result = await userFacade.getUserById.execute({

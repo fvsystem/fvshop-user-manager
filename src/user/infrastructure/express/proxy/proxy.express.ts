@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 import {
+  GetAllUsersInputProps,
+  GetAllUsersOutputProps,
+  GetAllUsersUseCase,
   GetByEmailInputProps,
   GetByEmailOutputProps,
   GetByIdInputProps,
@@ -15,7 +18,20 @@ export class GetByEmailUseCaseRest {
   }
 
   async execute(input: GetByEmailInputProps): Promise<GetByEmailOutputProps> {
-    const response = await axios.get(`${this.domain}/user/mail`, {
+    const response = await axios.get(`${this.domain}/users`, {
+      params: input,
+    });
+    return response.data;
+  }
+}
+
+export class GetAllUsersUseCaseRest {
+  constructor(private readonly domain: string) {
+    this.domain = domain;
+  }
+
+  async execute(input: GetAllUsersInputProps): Promise<GetAllUsersOutputProps> {
+    const response = await axios.get(`${this.domain}/users`, {
       params: input,
     });
     return response.data;
@@ -28,7 +44,7 @@ export class GetByIdUseCaseRest {
   }
 
   async execute(input: GetByIdInputProps): Promise<GetByIdOutputProps> {
-    const response = await axios.get(`${this.domain}/user/${input.userId}`);
+    const response = await axios.get(`${this.domain}/users/${input.userId}`);
     return response.data;
   }
 }
@@ -38,8 +54,11 @@ export class UserFacadeProxyExpress implements UserFacadeInterface {
 
   getUserById: UseCase<GetByIdInputProps, GetByIdOutputProps>;
 
+  getAllUsers: UseCase<GetAllUsersInputProps, GetAllUsersOutputProps>;
+
   constructor(domain: string) {
     this.getUserByEmail = new GetByEmailUseCaseRest(domain);
     this.getUserById = new GetByIdUseCaseRest(domain);
+    this.getAllUsers = new GetAllUsersUseCaseRest(domain);
   }
 }

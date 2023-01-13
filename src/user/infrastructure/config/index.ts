@@ -34,7 +34,7 @@ export type ConfigShared = {
 };
 
 export function makeConfigShared(envFile?: string): ConfigShared {
-  readEnv({ path: envFile });
+  readEnv({ path: envFile, override: true });
 
   const env = envSchema.parse(process.env);
 

@@ -7,11 +7,15 @@ import {
   GetByIdInputProps,
   GetByIdOutputProps,
   GetByIdUseCase,
+  GetAllUsersInputProps,
+  GetAllUsersOutputProps,
+  GetAllUsersUseCase,
 } from '../usecase';
 
 export type UserFacadeMethods = {
   getUserByEmail: UseCase<GetByEmailInputProps, GetByEmailOutputProps>;
   getUserById: UseCase<GetByIdInputProps, GetByIdOutputProps>;
+  getAllUsers: UseCase<GetAllUsersInputProps, GetAllUsersOutputProps>;
 };
 export type UserFacadeInterface = FacadeInterface<UserFacadeMethods>;
 
@@ -20,8 +24,11 @@ export class UserFacadeImpl implements UserFacadeInterface {
 
   getUserById: UseCase<GetByIdInputProps, GetByIdOutputProps>;
 
+  getAllUsers: UseCase<GetAllUsersInputProps, GetAllUsersOutputProps>;
+
   constructor(userRepository: UserRepositoryInterface) {
     this.getUserByEmail = new GetByEmailUseCase(userRepository);
     this.getUserById = new GetByIdUseCase(userRepository);
+    this.getAllUsers = new GetAllUsersUseCase(userRepository);
   }
 }
