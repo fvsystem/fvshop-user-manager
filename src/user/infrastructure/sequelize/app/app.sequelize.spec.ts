@@ -28,6 +28,14 @@ describe('AppSequelize', () => {
         logging: false,
       },
       rest: {},
+      grpc: {},
+      credentialFacade: {
+        domain: 'localhost',
+        port: 50051,
+      },
+      domain: {
+        domain: 'localhost',
+      },
       jwt: {
         publicKey: 'publicKey',
       },

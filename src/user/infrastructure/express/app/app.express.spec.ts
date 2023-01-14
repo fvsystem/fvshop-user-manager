@@ -57,7 +57,20 @@ const jwtService = {
   ),
 };
 
-const app = getAppExpress(new UserRepositoryMock(user), jwtService);
+const credentialFacade = {
+  createCredential: {
+    execute: jest.fn(),
+  },
+  verifyCredential: {
+    execute: jest.fn(),
+  },
+};
+
+const app = getAppExpress(
+  new UserRepositoryMock(user),
+  jwtService,
+  credentialFacade
+);
 
 describe('UserApplicationService', () => {
   beforeEach(async () => {
@@ -93,5 +106,19 @@ describe('UserApplicationService', () => {
       email: 'test@test.com',
       roles: ['admin'],
     });
+  });
+
+  it('should create user', async () => {
+    const response = await request(app)
+      .post('/users')
+      .set('Authorization', 'bearer admin')
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        roles: ['admin'],
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.user.email).toBe('test@test.com');
   });
 });

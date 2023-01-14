@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+import { CredentialFacadeImplGrpc } from '@fvsystem/fvshop-identity';
 import {
   JWTServiceJsonWebToken,
   LoggerServiceWinton,
@@ -31,7 +32,13 @@ const logger = new LoggerServiceWinton();
     publicKey: config.jwt.publicKey,
     expiration: '1h',
   });
-  const app = getAppExpress(userRepository, jwtService);
+
+  const credentialFacade = new CredentialFacadeImplGrpc(
+    config.credentialFacade.domain,
+    config.credentialFacade.port
+  );
+
+  const app = getAppExpress(userRepository, jwtService, credentialFacade);
   app.listen(config.rest.port || 3000, () => {
     logger.info(`Server running on port ${config.rest.port || 3000}`);
   });

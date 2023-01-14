@@ -42,4 +42,24 @@ describe('ClientExpress', () => {
     });
     expect(getSpy).toBeCalledWith('domain/users/userId');
   });
+
+  it('should call the server when trying to create user', async () => {
+    const clientExpress = new UserFacadeProxyExpress('domain');
+    const postSpy = jest.spyOn(axios, 'post');
+    postSpy.mockResolvedValue({ data: {} });
+    await clientExpress.createUser.execute({
+      firstName: 'firstName',
+      lastName: 'lastName',
+      email: 'email',
+      password: 'password',
+      roles: ['admin'],
+    });
+    expect(postSpy).toBeCalledWith('domain/users', {
+      firstName: 'firstName',
+      lastName: 'lastName',
+      email: 'email',
+      password: 'password',
+      roles: ['admin'],
+    });
+  });
 });

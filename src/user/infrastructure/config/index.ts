@@ -13,12 +13,26 @@ const envSchema = z.object({
   DB_PORT: z.coerce.number().optional(),
   DB_USERNAME: z.string().optional(),
   JWT_PUBLIC_KEY: z.string(),
+  DOMAIN: z.string(),
+  CREDENTIAL_DOMAIN: z.string(),
+  CREDENTIAL_PORT: z.coerce.number(),
+  GRPC_PORT: z.coerce.number().optional(),
 });
 
 export type ConfigShared = {
   nodeEnv: string;
   rest: {
     port?: number;
+  };
+  grpc: {
+    port?: number;
+  };
+  domain: {
+    domain: string;
+  };
+  credentialFacade: {
+    domain: string;
+    port: number;
   };
   db: {
     vendor: string;
@@ -41,14 +55,24 @@ export function makeConfigShared(envFile?: string): ConfigShared {
   return {
     nodeEnv: env.NODE_ENV,
     rest: {
-      port: env.REST_PORT ? Number(env.REST_PORT) : undefined,
+      port: env.REST_PORT,
+    },
+    grpc: {
+      port: env.GRPC_PORT,
+    },
+    domain: {
+      domain: env.DOMAIN,
+    },
+    credentialFacade: {
+      domain: env.CREDENTIAL_DOMAIN,
+      port: env.CREDENTIAL_PORT,
     },
     db: {
       vendor: env.DB_VENDOR,
       host: env.DB_HOST,
       logging: env.DB_LOGGING,
       password: env.DB_PASSWORD,
-      port: env.DB_PORT ? Number(env.DB_PORT) : undefined,
+      port: env.DB_PORT,
       username: env.DB_USERNAME,
     },
     jwt: {

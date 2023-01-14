@@ -1,9 +1,5 @@
 import request from 'supertest';
-import {
-  NameValueObject,
-  RoleEntity,
-  UserEntityFactory,
-} from '@root/user/domain';
+import { RoleEntity } from '@root/user/domain';
 import {
   getAppSequelize,
   RoleMapper,
@@ -54,6 +50,15 @@ const jwtService = {
   ),
 };
 
+const credentialFacade = {
+  createCredential: {
+    execute: jest.fn(),
+  },
+  verifyCredential: {
+    execute: jest.fn(),
+  },
+};
+
 describe('E2E express-sequelize', () => {
   it('should find by email', async () => {
     const config = {
@@ -63,23 +68,30 @@ describe('E2E express-sequelize', () => {
         host: ':memory:',
         logging: false,
       },
+      grpc: {},
+      credentialFacade: {
+        domain: 'localhost',
+        port: 50051,
+      },
+      domain: {
+        domain: 'localhost',
+      },
       rest: {},
       jwt: {
         publicKey: 'publicKey',
       },
     };
     await getAppSequelize(config);
+
+    const userRepository = new UserRepositorySequelize(
+      UserModelSequelize,
+      UserMapper.mapToEntity,
+      UserMapper.mapToModel
+    );
+
     const role = new RoleEntity({ name: 'admin' });
     const role2 = new RoleEntity({ name: 'user' });
-    const name = new NameValueObject({
-      firstName: 'John',
-      lastName: 'Doe',
-    });
-    const user = await UserEntityFactory.create({
-      email: 'test@test.com',
-      roles: [role, role2],
-      name,
-    });
+
     const roleRepository = new RoleRepositorySequelize(
       RoleModelSequelize,
       RoleMapper.mapToEntity,
@@ -89,14 +101,19 @@ describe('E2E express-sequelize', () => {
     await roleRepository.insert(role);
     await roleRepository.insert(role2);
 
-    const userRepository = new UserRepositorySequelize(
-      UserModelSequelize,
-      UserMapper.mapToEntity,
-      UserMapper.mapToModel
-    );
-    await userRepository.insert(user);
+    const app = getAppExpress(userRepository, jwtService, credentialFacade);
 
-    const app = getAppExpress(userRepository, jwtService);
+    const responseCreation = await request(app)
+      .post('/users')
+      .set('Authorization', 'Bearer admin')
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        password: 'val1dPassw0rd',
+        roles: ['admin', 'user'],
+      })
+      .expect(201);
 
     const response = await request(app)
       .get('/users')
@@ -105,7 +122,7 @@ describe('E2E express-sequelize', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
-      id: user.id,
+      id: responseCreation.body.user.id,
       firstName: 'John',
       lastName: 'Doe',
       fullName: 'John Doe',
@@ -124,23 +141,30 @@ describe('E2E express-sequelize', () => {
         host: ':memory:',
         logging: false,
       },
+      grpc: {},
+      credentialFacade: {
+        domain: 'localhost',
+        port: 50051,
+      },
+      domain: {
+        domain: 'localhost',
+      },
       rest: {},
       jwt: {
         publicKey: 'publicKey',
       },
     };
     await getAppSequelize(config);
+
+    const userRepository = new UserRepositorySequelize(
+      UserModelSequelize,
+      UserMapper.mapToEntity,
+      UserMapper.mapToModel
+    );
+
     const role = new RoleEntity({ name: 'admin' });
     const role2 = new RoleEntity({ name: 'user' });
-    const name = new NameValueObject({
-      firstName: 'John',
-      lastName: 'Doe',
-    });
-    const user = await UserEntityFactory.create({
-      email: 'test@test.com',
-      roles: [role, role2],
-      name,
-    });
+
     const roleRepository = new RoleRepositorySequelize(
       RoleModelSequelize,
       RoleMapper.mapToEntity,
@@ -150,22 +174,27 @@ describe('E2E express-sequelize', () => {
     await roleRepository.insert(role);
     await roleRepository.insert(role2);
 
-    const userRepository = new UserRepositorySequelize(
-      UserModelSequelize,
-      UserMapper.mapToEntity,
-      UserMapper.mapToModel
-    );
-    await userRepository.insert(user);
+    const app = getAppExpress(userRepository, jwtService, credentialFacade);
 
-    const app = getAppExpress(userRepository, jwtService);
+    const responseCreation = await request(app)
+      .post('/users')
+      .set('Authorization', 'Bearer admin')
+      .send({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'test@test.com',
+        password: 'val1dPassw0rd',
+        roles: ['admin', 'user'],
+      })
+      .expect(201);
 
     const response = await request(app)
-      .get(`/users/${user.id}`)
+      .get(`/users/${responseCreation.body.user.id}`)
       .set('Authorization', 'Bearer admin');
 
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
-      id: user.id,
+      id: responseCreation.body.user.id,
       firstName: 'John',
       lastName: 'Doe',
       fullName: 'John Doe',

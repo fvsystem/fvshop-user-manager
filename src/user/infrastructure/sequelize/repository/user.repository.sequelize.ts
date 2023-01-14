@@ -8,6 +8,7 @@ import {
   UserRepositoryInterface,
 } from '@root/user/domain';
 import { Model, ModelCtor } from 'sequelize-typescript';
+import { Op } from 'sequelize';
 import { UserBDDTO, UserBDDTOCreation } from './user.model.sequelize';
 import { RoleModelSequelize } from './role.model.sequelize';
 import { RoleMapper } from './role.mapper.sequelize';
@@ -67,20 +68,29 @@ export class UserRepositorySequelize
         },
         { transaction }
       );
-      const relations = entity.roles.map((role) => ({
+      const roleNames = entity.roles.map((role) => role.name);
+      const roles = await RoleModelSequelize.findAll({
+        where: { name: { [Op.in]: roleNames } },
+      });
+
+      const relations = roles.map((role) => ({
         userId: entity.id,
         roleId: role.id,
       }));
+
       await RoleUserModelSequelize.bulkCreate(relations, { transaction });
       await transaction.commit();
     } catch (error) {
       /* istanbul ignore next */
       await transaction.rollback();
+      throw error;
     }
   }
 
   async update(entity: UserEntity): Promise<void> {
-    const user = await this.model.findByPk(entity.id);
+    const user = await this.model.findByPk(entity.id, {
+      include: [{ model: RoleModelSequelize, as: 'roles' }],
+    });
     if (!user) {
       throw new NotFoundError(`User with id ${entity.id} not found`);
     }
@@ -93,7 +103,11 @@ export class UserRepositorySequelize
           transaction,
         }
       );
-      const relations = entity.roles.map((role) => ({
+      const roleNames = entity.roles.map((role) => role.name);
+      const roles = await RoleModelSequelize.findAll({
+        where: { name: { [Op.in]: roleNames } },
+      });
+      const relations = roles.map((role) => ({
         userId: entity.id,
         roleId: role.id,
       }));
@@ -106,6 +120,7 @@ export class UserRepositorySequelize
     } catch (error) {
       /* istanbul ignore next */
       await transaction.rollback();
+      throw error;
     }
   }
 

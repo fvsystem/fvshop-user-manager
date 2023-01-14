@@ -185,9 +185,19 @@ const jwtService = {
 
 const app = express();
 
+const credentialFacade = {
+  createCredential: {
+    execute: jest.fn(),
+  },
+  verifyCredential: {
+    execute: jest.fn(),
+  },
+};
+
 const routesExpressIdentity = new RoutesExpressUser(
   new MockUserRepository([userAdmin, userUserAdmin, regularUser, regularUser2]),
-  jwtService
+  jwtService,
+  credentialFacade
 );
 
 const routes = Router();
@@ -314,5 +324,62 @@ describe('VerifyUserUseCase', () => {
       .get(`/users/noUser`)
       .set('Authorization', 'bearer users-admin');
     expect(response.status).toBe(400);
+  });
+
+  it('should return 201 when creating with a admin logged', async () => {
+    const response = await request(app)
+      .post('/users')
+      .set('Authorization', 'bearer admin')
+      .send({
+        email: 'test@test.com',
+        password: 'val1dPassw0rd',
+        roles: ['user'],
+        firstName: 'John',
+        lastName: 'Doe',
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.user.email).toBe('test@test.com');
+  });
+
+  it('should return 201 when creating with a users-admin logged', async () => {
+    const response = await request(app)
+      .post('/users')
+      .set('Authorization', 'bearer admin')
+      .send({
+        email: 'test@test.com',
+        password: 'val1dPassw0rd',
+        roles: ['user'],
+        firstName: 'John',
+        lastName: 'Doe',
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.user.email).toBe('test@test.com');
+  });
+
+  it('should return 401 when creating with a users logged', async () => {
+    const response = await request(app)
+      .post('/users')
+      .set('Authorization', 'bearer user')
+      .send({
+        email: 'test@test.com',
+        password: 'val1dPassw0rd',
+        roles: ['user'],
+        firstName: 'John',
+        lastName: 'Doe',
+      });
+    expect(response.status).toBe(401);
+  });
+
+  it('should return 401 when creating not logged', async () => {
+    const response = await request(app)
+      .post('/users')
+      .send({
+        email: 'test@test.com',
+        password: 'val1dPassw0rd',
+        roles: ['user'],
+        firstName: 'John',
+        lastName: 'Doe',
+      });
+    expect(response.status).toBe(401);
   });
 });

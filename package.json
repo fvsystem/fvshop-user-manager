@@ -70,7 +70,7 @@
     }
   },
   "dependencies": {
-    "@fvsystem/fvshop-identity": "^0.2.1",
+    "@fvsystem/fvshop-identity": "^0.2.2",
     "@fvsystem/fvshop-shared-entities": "^0.1.33",
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",

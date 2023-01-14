@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 import {
+  CreateUserInputProps,
+  CreateUserOutputProps,
   GetAllUsersInputProps,
   GetAllUsersOutputProps,
-  GetAllUsersUseCase,
   GetByEmailInputProps,
   GetByEmailOutputProps,
   GetByIdInputProps,
@@ -49,6 +50,17 @@ export class GetByIdUseCaseRest {
   }
 }
 
+export class CreateUserUseCaseRest {
+  constructor(private readonly domain: string) {
+    this.domain = domain;
+  }
+
+  async execute(input: CreateUserInputProps): Promise<CreateUserOutputProps> {
+    const response = await axios.post(`${this.domain}/users`, input);
+    return response.data;
+  }
+}
+
 export class UserFacadeProxyExpress implements UserFacadeInterface {
   getUserByEmail: UseCase<GetByEmailInputProps, GetByEmailOutputProps>;
 
@@ -56,9 +68,12 @@ export class UserFacadeProxyExpress implements UserFacadeInterface {
 
   getAllUsers: UseCase<GetAllUsersInputProps, GetAllUsersOutputProps>;
 
+  createUser: UseCase<CreateUserInputProps, CreateUserOutputProps>;
+
   constructor(domain: string) {
     this.getUserByEmail = new GetByEmailUseCaseRest(domain);
     this.getUserById = new GetByIdUseCaseRest(domain);
     this.getAllUsers = new GetAllUsersUseCaseRest(domain);
+    this.createUser = new CreateUserUseCaseRest(domain);
   }
 }

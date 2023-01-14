@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { checkTokenExpress } from '@fvsystem/fvshop-identity';
+import CredentialFacade, { checkTokenExpress } from '@fvsystem/fvshop-identity';
 import { JWTServicesInterface } from '@fvsystem/fvshop-shared-entities';
 import { UserFacadeImpl } from '@root/user/application';
 import { UserRepositoryInterface } from '@root/user/domain';
@@ -12,11 +12,15 @@ export class RoutesExpressUser {
       email: string;
       userId: string;
       scope: string[];
-    }>
+    }>,
+    private readonly credentialFacade: CredentialFacade
   ) {}
 
   addRoutes(router: Router) {
-    const userFacade = new UserFacadeImpl(this.userRepository);
+    const userFacade = new UserFacadeImpl(
+      this.userRepository,
+      this.credentialFacade
+    );
 
     router.get(
       '/users',
@@ -68,6 +72,26 @@ export class RoutesExpressUser {
             userId: id,
           });
           res.status(200).json(result);
+        } catch (err) {
+          res.status(400).json(err);
+        }
+      }
+    );
+
+    router.post(
+      '/users',
+      checkTokenExpress(['admin', 'users-admin'], this.jwtService),
+      async (req, res) => {
+        const { firstName, lastName, email, password, roles } = req.body;
+        try {
+          const result = await userFacade.createUser.execute({
+            firstName,
+            lastName,
+            email,
+            password,
+            roles,
+          });
+          res.status(201).json(result);
         } catch (err) {
           res.status(400).json(err);
         }
