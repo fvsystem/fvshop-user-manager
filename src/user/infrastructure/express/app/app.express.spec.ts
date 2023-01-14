@@ -9,7 +9,7 @@ const name = new NameValueObject({
 });
 
 const role = new RoleEntity({
-  name: 'SalesAdministrator',
+  name: 'admin',
 });
 
 const user = new UserEntity({
@@ -18,15 +18,55 @@ const user = new UserEntity({
   email: 'test@test.com',
 });
 
-const app = getAppExpress(new UserRepositoryMock(user));
+const jwtService = {
+  sign: jest.fn(),
+  verify: jest.fn().mockImplementation(
+    (token) =>
+      new Promise((resolve, reject) => {
+        if (token === 'admin') {
+          resolve({
+            userId: 'id',
+            email: 'test@test.com',
+            scope: ['admin'],
+          });
+        }
+        if (token === 'users-admin') {
+          resolve({
+            userId: 'id',
+            email: 'test2@test.com',
+            scope: ['users-admin'],
+          });
+        }
+        if (token === 'user') {
+          resolve({
+            userId: 'id',
+            email: 'test3@test.com',
+            scope: ['user'],
+          });
+        }
+
+        if (token === 'user2') {
+          resolve({
+            userId: 'id',
+            email: 'test4@test.com',
+            scope: ['user'],
+          });
+        }
+        reject(new Error('Invalid token'));
+      })
+  ),
+};
+
+const app = getAppExpress(new UserRepositoryMock(user), jwtService);
 
 describe('UserApplicationService', () => {
   beforeEach(async () => {
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
   it('should get user by email', async () => {
     const response = await request(app)
       .get('/users')
+      .set('Authorization', 'bearer admin')
       .query({ email: 'test@test.com' });
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
@@ -35,12 +75,15 @@ describe('UserApplicationService', () => {
       lastName: 'Doe',
       fullName: 'John Doe',
       email: 'test@test.com',
-      roles: ['SalesAdministrator'],
+      roles: ['admin'],
     });
   });
 
   it('should get user by id', async () => {
-    const response = await request(app).get(`/users/${user.id}`);
+    const response = await request(app)
+      .get(`/users/${user.id}`)
+      .set('Authorization', 'bearer admin');
+
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
       id: user.id,
@@ -48,7 +91,7 @@ describe('UserApplicationService', () => {
       lastName: 'Doe',
       fullName: 'John Doe',
       email: 'test@test.com',
-      roles: ['SalesAdministrator'],
+      roles: ['admin'],
     });
   });
 });

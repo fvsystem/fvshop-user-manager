@@ -1,5 +1,8 @@
 /* istanbul ignore file */
-import { LoggerServiceWinton } from '@fvsystem/fvshop-shared-entities';
+import {
+  JWTServiceJsonWebToken,
+  LoggerServiceWinton,
+} from '@fvsystem/fvshop-shared-entities';
 import { makeConfigShared } from '../../config';
 import { getAppExpress } from '../../express';
 import {
@@ -19,7 +22,16 @@ const logger = new LoggerServiceWinton();
     UserMapper.mapToEntity,
     UserMapper.mapToModel
   );
-  const app = getAppExpress(userRepository);
+  const jwtService = new JWTServiceJsonWebToken<{
+    email: string;
+    userId: string;
+    scope: string[];
+  }>({
+    algorithm: 'RS256',
+    publicKey: config.jwt.publicKey,
+    expiration: '1h',
+  });
+  const app = getAppExpress(userRepository, jwtService);
   app.listen(config.rest.port || 3000, () => {
     logger.info(`Server running on port ${config.rest.port || 3000}`);
   });

@@ -15,6 +15,45 @@ import {
 } from '../../sequelize';
 import { getAppExpress } from '../../express';
 
+const jwtService = {
+  sign: jest.fn(),
+  verify: jest.fn().mockImplementation(
+    (token) =>
+      new Promise((resolve, reject) => {
+        if (token === 'admin') {
+          resolve({
+            userId: 'id',
+            email: 'test@test.com',
+            scope: ['admin'],
+          });
+        }
+        if (token === 'users-admin') {
+          resolve({
+            userId: 'id',
+            email: 'test2@test.com',
+            scope: ['users-admin'],
+          });
+        }
+        if (token === 'user') {
+          resolve({
+            userId: 'id',
+            email: 'test3@test.com',
+            scope: ['user'],
+          });
+        }
+
+        if (token === 'user2') {
+          resolve({
+            userId: 'id',
+            email: 'test4@test.com',
+            scope: ['user'],
+          });
+        }
+        reject(new Error('Invalid token'));
+      })
+  ),
+};
+
 describe('E2E express-sequelize', () => {
   it('should find by email', async () => {
     const config = {
@@ -57,10 +96,11 @@ describe('E2E express-sequelize', () => {
     );
     await userRepository.insert(user);
 
-    const app = getAppExpress(userRepository);
+    const app = getAppExpress(userRepository, jwtService);
 
     const response = await request(app)
       .get('/users')
+      .set('Authorization', 'Bearer admin')
       .query({ email: 'test@test.com' });
 
     expect(response.status).toBe(200);
@@ -117,9 +157,11 @@ describe('E2E express-sequelize', () => {
     );
     await userRepository.insert(user);
 
-    const app = getAppExpress(userRepository);
+    const app = getAppExpress(userRepository, jwtService);
 
-    const response = await request(app).get(`/users/${user.id}`);
+    const response = await request(app)
+      .get(`/users/${user.id}`)
+      .set('Authorization', 'Bearer admin');
 
     expect(response.status).toBe(200);
     expect(response.body.user).toEqual({
