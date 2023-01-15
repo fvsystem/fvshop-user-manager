@@ -60,7 +60,6 @@ describe('E2E grpc-sequelize', () => {
     );
 
     const role = new RoleEntity({ name: 'admin' });
-    const role2 = new RoleEntity({ name: 'user' });
 
     const roleRepository = new RoleRepositorySequelize(
       RoleModelSequelize,
@@ -69,7 +68,6 @@ describe('E2E grpc-sequelize', () => {
     );
 
     await roleRepository.insert(role);
-    await roleRepository.insert(role2);
 
     const app = getAppGrpc(userRepository, credentialFacade);
 
@@ -106,7 +104,7 @@ describe('E2E grpc-sequelize', () => {
       lastName: 'Doe',
       email: 'test@test.com',
       password: 'val1dPassw0rd',
-      roles: ['admin', 'user'],
+      roles: ['admin'],
     });
 
     expect(responseCreation.user).toEqual({
@@ -115,7 +113,7 @@ describe('E2E grpc-sequelize', () => {
       lastName: 'Doe',
       fullName: 'John Doe',
       email: 'test@test.com',
-      roles: ['admin', 'user'],
+      roles: ['admin'],
     });
 
     createUserClient.close();
@@ -140,7 +138,7 @@ describe('E2E grpc-sequelize', () => {
       lastName: 'Doe',
       fullName: 'John Doe',
       email: 'test@test.com',
-      roles: ['admin', 'user'],
+      roles: ['admin'],
     });
 
     getByEmailClient.close();
@@ -163,7 +161,7 @@ describe('E2E grpc-sequelize', () => {
       lastName: 'Doe',
       fullName: 'John Doe',
       email: 'test@test.com',
-      roles: ['admin', 'user'],
+      roles: ['admin'],
     });
 
     getByIdClient.close();
@@ -186,7 +184,7 @@ describe('E2E grpc-sequelize', () => {
         lastName: 'Doe',
         fullName: 'John Doe',
         email: 'test@test.com',
-        roles: ['admin', 'user'],
+        roles: ['admin'],
       },
     ]);
 
