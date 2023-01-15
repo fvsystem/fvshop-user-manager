@@ -66,7 +66,7 @@ export class GetByIdUserCaseGrpc {
   }
 }
 
-export class CredentialFacadeImplGrpc implements UserFacadeInterface {
+export class UserFacadeProxyGrpc implements UserFacadeInterface {
   getUserByEmail: UseCase<GetByEmailInputProps, GetByEmailOutputProps>;
 
   getUserById: UseCase<GetByIdInputProps, GetByIdOutputProps>;

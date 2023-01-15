@@ -1,4 +1,4 @@
-import { CredentialFacadeImplGrpc } from './proxy.grpc';
+import { UserFacadeProxyGrpc } from './proxy.grpc';
 
 const client = {
   close: jest.fn(),
@@ -50,7 +50,7 @@ jest.mock('@grpc/grpc-js', () => ({
 
 describe('GrpcProxy', () => {
   it('should call createUser service', () => {
-    const proxy = new CredentialFacadeImplGrpc('localhost', 50051);
+    const proxy = new UserFacadeProxyGrpc('localhost', 50051);
     proxy.createUser.execute({
       email: 'test@test.com',
       password: 'validHFH676',
@@ -62,7 +62,7 @@ describe('GrpcProxy', () => {
   });
 
   it('should call getByEmail service', () => {
-    const proxy = new CredentialFacadeImplGrpc('localhost', 50051);
+    const proxy = new UserFacadeProxyGrpc('localhost', 50051);
     proxy.getUserByEmail.execute({
       email: 'test@test.com',
     });
@@ -70,7 +70,7 @@ describe('GrpcProxy', () => {
   });
 
   it('should call getById service', () => {
-    const proxy = new CredentialFacadeImplGrpc('localhost', 50051);
+    const proxy = new UserFacadeProxyGrpc('localhost', 50051);
     proxy.getUserById.execute({
       userId: 'userId',
     });
@@ -78,7 +78,7 @@ describe('GrpcProxy', () => {
   });
 
   it('should call getAllUsers service', () => {
-    const proxy = new CredentialFacadeImplGrpc('localhost', 50051);
+    const proxy = new UserFacadeProxyGrpc('localhost', 50051);
     proxy.getAllUsers.execute({});
     expect(getAllUsersClient.GetAllUsers).toBeCalledTimes(1);
   });
