@@ -16,13 +16,18 @@
   "scripts": {
     "pretest": "tsc --noEmit",
     "test": "jest",
+    "clean": "rimraf dist/",
+    "copy-files-cjs": "copyfiles -u 1 src/**/*.proto dist/cjs",
+    "copy-files-esm": "copyfiles -u 1 src/**/*.proto dist/esm",
     "prepublish": "npm run build",
-    "build": "npm run build:esm && npm run build:cjs",
+    "build": "npm run clean && npm run copy-files-cjs && npm run copy-files-esm && npm run build:esm && npm run build:cjs",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs && tscpaths -p tsconfig.json -s ./src -o ./dist/cjs",
     "build:esm": "tsc && tscpaths -p tsconfig.json -s ./src -o ./dist/esm",
     "commit": "cz",
     "start-express-sequelize": "node user/infrastructure/app/express-sequelize",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/user/infrastructure/app/express-sequelize' -e ts"
+    "start-grpc-sequelize": "node user/infrastructure/app/grpc-sequelize",
+    "dev-grpc": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/user/infrastructure/app/grpc-sequelize' -e ts",
+    "dev-express": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register src/user/infrastructure/app/express-sequelize' -e ts"
   },
   "repository": {
     "type": "git",
@@ -47,6 +52,7 @@
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "commitizen": "latest",
+    "copyfiles": "^2.4.1",
     "cz-conventional-changelog": "latest",
     "eslint": "latest",
     "eslint-config-airbnb-base": "latest",
@@ -58,6 +64,7 @@
     "jest": "latest",
     "nodemon": "latest",
     "prettier": "latest",
+    "rimraf": "^4.0.5",
     "ts-jest": "latest",
     "ts-node": "latest",
     "tsconfig-paths": "^4.1.1",
@@ -70,7 +77,7 @@
     }
   },
   "dependencies": {
-    "@fvsystem/fvshop-identity": "^0.2.2",
+    "@fvsystem/fvshop-identity": "^0.2.3",
     "@fvsystem/fvshop-shared-entities": "^0.1.33",
     "@grpc/grpc-js": "^1.8.4",
     "@grpc/proto-loader": "^0.7.4",
