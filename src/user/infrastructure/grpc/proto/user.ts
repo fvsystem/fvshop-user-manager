@@ -1,6 +1,7 @@
 // Original file: src/user/infrastructure/grpc/proto/user.proto
-import type * as grpc from '@grpc/grpc-js';
-import type { MessageTypeDefinition } from '@grpc/proto-loader';
+
+import * as grpc from '@grpc/grpc-js';
+import { MessageTypeDefinition } from '@grpc/proto-loader';
 import {
   GetByEmailClient as _GetByEmailClient,
   GetByEmailDefinition as _GetByEmailDefinition,
@@ -9,11 +10,15 @@ import type {
   GetByIdClient as _GetByIdClient,
   GetByIdDefinition as _GetByIdDefinition,
 } from './GetById';
-import {
+import type {
+  HealthClient as _HealthClient,
+  HealthDefinition as _HealthDefinition,
+} from './Health';
+import type {
   GetAllUsersClient as _GetAllUsersClient,
   GetAllUsersDefinition as _GetAllUsersDefinition,
 } from './GetAllUsers';
-import {
+import type {
   CreateUserClient as _CreateUserClient,
   CreateUserDefinition as _CreateUserDefinition,
 } from './CreateUser';
@@ -64,5 +69,10 @@ export interface ProtoGrpcType {
   };
   GetByIdRequest: MessageTypeDefinition;
   GetByIdResponse: MessageTypeDefinition;
+  Health: SubtypeConstructor<typeof grpc.Client, _HealthClient> & {
+    service: _HealthDefinition;
+  };
+  HealthCheckRequest: MessageTypeDefinition;
+  HealthCheckResponse: MessageTypeDefinition;
   User: MessageTypeDefinition;
 }

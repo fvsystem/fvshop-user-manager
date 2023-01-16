@@ -11,6 +11,7 @@ import {
   GetAllUsersClient,
   CreateUserClient,
   ProtoGrpcType,
+  HealthClient,
 } from '../proto';
 
 const protoPath = resolve(__dirname, '../proto/user.proto');
@@ -19,13 +20,15 @@ export type Services =
   | GetByEmailClient
   | GetByIdClient
   | GetAllUsersClient
-  | CreateUserClient;
+  | CreateUserClient
+  | HealthClient;
 
 export type ServicesNames =
   | 'GetByEmail'
   | 'GetById'
   | 'GetAllUsers'
-  | 'CreateUser';
+  | 'CreateUser'
+  | 'Health';
 
 export class ServerGrpc {
   private readonly _packageDefinition: ProtoGrpcType;
@@ -34,6 +37,7 @@ export class ServerGrpc {
 
   constructor(packageDefinition: ProtoGrpcType, handlers: Handlers) {
     this._packageDefinition = packageDefinition;
+
     this._server = new grpc.Server();
     this._server.addService(
       this._packageDefinition.CreateUser.service,
@@ -50,6 +54,10 @@ export class ServerGrpc {
     this._server.addService(
       this._packageDefinition.GetById.service,
       handlers.GetById
+    );
+    this._server.addService(
+      this._packageDefinition.Health.service,
+      handlers.Health
     );
   }
 

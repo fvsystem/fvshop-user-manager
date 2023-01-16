@@ -16,12 +16,14 @@ import { CreateUserHandlers } from '../proto/CreateUser';
 import { GetByEmailHandlers } from '../proto/GetByEmail';
 import { GetByIdHandlers } from '../proto/GetById';
 import { GetAllUsersHandlers } from '../proto/GetAllUsers';
+import { HealthHandlers } from '../proto/Health';
 
 export interface Handlers {
   CreateUser: CreateUserHandlers;
   GetById: GetByIdHandlers;
   GetByEmail: GetByEmailHandlers;
   GetAllUsers: GetAllUsersHandlers;
+  Health: HealthHandlers;
 }
 
 export function getHandlers(
@@ -32,6 +34,14 @@ export function getHandlers(
   const userFacade = new UserFacadeImpl(userRepository, credentialFacade);
 
   return {
+    Health: {
+      Check: (call, callback) => {
+        callback(null, { status: 'SERVING' });
+      },
+      Watch: (call) => {
+        call.write({ status: 'SERVING' });
+      },
+    },
     CreateUser: {
       CreateUser: (call, callback) => {
         (

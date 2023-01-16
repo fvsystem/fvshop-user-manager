@@ -15,6 +15,7 @@ import {
   GetAllUsersClient,
   GetByEmailClient,
   GetByIdClient,
+  HealthClient,
 } from '../proto';
 
 let app: ServerGrpc;
@@ -22,6 +23,7 @@ let getByEmailClient: GetByEmailClient;
 let getByIdClient: GetByIdClient;
 let getAllUsersClient: GetAllUsersClient;
 let createUserClient: CreateUserClient;
+let health: HealthClient;
 
 class MockUserRepository implements UserRepositoryInterface {
   sortableFields: string[] = ['email'];
@@ -134,6 +136,7 @@ describe('App Express', () => {
       address,
       'CreateUser'
     ) as CreateUserClient;
+    health = app.getClient('localhost', address, 'Health') as HealthClient;
   });
 
   afterAll(async () => {
@@ -141,6 +144,7 @@ describe('App Express', () => {
     getByIdClient.close();
     getAllUsersClient.close();
     createUserClient.close();
+    health.close();
     const sleep = promisify(setTimeout);
     await sleep(6000);
     const finish = promisify(app.server.tryShutdown.bind(app.server));
@@ -148,6 +152,9 @@ describe('App Express', () => {
   });
 
   it('should create user and find it', async () => {
+    const healthCheck = promisify(health.check.bind(health));
+    await expect(healthCheck({})).resolves.toEqual({ status: 1 });
+
     const createUser = promisify(
       createUserClient.CreateUser.bind(createUserClient)
     );
