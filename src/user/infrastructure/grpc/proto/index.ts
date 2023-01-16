@@ -11,6 +11,3 @@ export * from './GetByEmailRequest';
 export * from './GetByEmailResponse';
 export * from './GetByIdRequest';
 export * from './GetByIdResponse';
-export * from './Health';
-export * from './HealthCheckRequest';
-export * from './HealthCheckResponse';

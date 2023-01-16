@@ -16,7 +16,7 @@ import { CreateUserHandlers } from '../proto/CreateUser';
 import { GetByEmailHandlers } from '../proto/GetByEmail';
 import { GetByIdHandlers } from '../proto/GetById';
 import { GetAllUsersHandlers } from '../proto/GetAllUsers';
-import { HealthHandlers } from '../proto/Health';
+import { HealthHandlers } from '../proto/grpc/health/v1/Health';
 
 export interface Handlers {
   CreateUser: CreateUserHandlers;

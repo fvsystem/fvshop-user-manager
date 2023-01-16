@@ -1,5 +1,4 @@
 // Original file: src/user/infrastructure/grpc/proto/user.proto
-
 import * as grpc from '@grpc/grpc-js';
 import { MessageTypeDefinition } from '@grpc/proto-loader';
 import {
@@ -11,10 +10,6 @@ import type {
   GetByIdDefinition as _GetByIdDefinition,
 } from './GetById';
 import type {
-  HealthClient as _HealthClient,
-  HealthDefinition as _HealthDefinition,
-} from './Health';
-import type {
   GetAllUsersClient as _GetAllUsersClient,
   GetAllUsersDefinition as _GetAllUsersDefinition,
 } from './GetAllUsers';
@@ -22,6 +17,10 @@ import type {
   CreateUserClient as _CreateUserClient,
   CreateUserDefinition as _CreateUserDefinition,
 } from './CreateUser';
+import type {
+  HealthClient as _grpc_health_v1_HealthClient,
+  HealthDefinition as _grpc_health_v1_HealthDefinition,
+} from './grpc/health/v1/Health';
 
 export interface User {
   id?: string;
@@ -69,10 +68,17 @@ export interface ProtoGrpcType {
   };
   GetByIdRequest: MessageTypeDefinition;
   GetByIdResponse: MessageTypeDefinition;
-  Health: SubtypeConstructor<typeof grpc.Client, _HealthClient> & {
-    service: _HealthDefinition;
-  };
-  HealthCheckRequest: MessageTypeDefinition;
-  HealthCheckResponse: MessageTypeDefinition;
   User: MessageTypeDefinition;
+  grpc: {
+    health: {
+      v1: {
+        Health: SubtypeConstructor<
+          typeof grpc.Client,
+          _grpc_health_v1_HealthClient
+        > & { service: _grpc_health_v1_HealthDefinition };
+        HealthCheckRequest: MessageTypeDefinition;
+        HealthCheckResponse: MessageTypeDefinition;
+      };
+    };
+  };
 }

@@ -11,8 +11,8 @@ import {
   GetAllUsersClient,
   CreateUserClient,
   ProtoGrpcType,
-  HealthClient,
 } from '../proto';
+import { HealthClient } from '../proto/grpc/health/v1/Health';
 
 const protoPath = resolve(__dirname, '../proto/user.proto');
 
@@ -56,7 +56,7 @@ export class ServerGrpc {
       handlers.GetById
     );
     this._server.addService(
-      this._packageDefinition.Health.service,
+      this._packageDefinition.grpc.health.v1.Health.service,
       handlers.Health
     );
   }
@@ -74,6 +74,13 @@ export class ServerGrpc {
     port: number,
     service: ServicesNames
   ): Services {
+    if (service === 'Health') {
+      return new this.packageDefinition.grpc.health.v1.Health(
+        `${domain}:${port}`,
+        grpc.credentials.createInsecure()
+      );
+    }
+
     const client = new this.packageDefinition[service](
       `${domain}:${port}`,
       grpc.credentials.createInsecure()

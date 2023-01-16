@@ -15,8 +15,8 @@ import {
   GetAllUsersClient,
   GetByEmailClient,
   GetByIdClient,
-  HealthClient,
 } from '../proto';
+import { HealthClient } from '../proto/grpc/health/v1/Health';
 
 let app: ServerGrpc;
 let getByEmailClient: GetByEmailClient;

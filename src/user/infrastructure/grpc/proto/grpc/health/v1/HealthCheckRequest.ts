@@ -1,4 +1,4 @@
-// Original file: src/user/infrastructure/grpc/proto/user.proto
+// Original file: src/user/infrastructure/grpc/proto/health.proto
 
 
 export interface HealthCheckRequest {
