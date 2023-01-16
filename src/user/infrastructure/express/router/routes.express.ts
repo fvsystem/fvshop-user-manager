@@ -22,6 +22,10 @@ export class RoutesExpressUser {
       this.credentialFacade
     );
 
+    router.get('/health', (req, res) => {
+      res.status(200).json({ message: 'OK' });
+    });
+
     router.get(
       '/users',
       checkTokenExpress(['admin', 'users-admin'], this.jwtService),

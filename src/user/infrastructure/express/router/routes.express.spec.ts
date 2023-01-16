@@ -243,6 +243,11 @@ describe('VerifyUserUseCase', () => {
     expect(response.status).toBe(401);
   });
 
+  it('should return health information', async () => {
+    const response = await request(app).get('/health');
+    expect(response.status).toBe(200);
+  });
+
   it('should return users when logged by admin', async () => {
     const response = await request(app)
       .get('/users')
