@@ -34,8 +34,12 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 	CONSTRAINT "roles-users_pkey" PRIMARY KEY (user_id, role_id)
     );
 
-    ALTER TABLE public."roles-users" ADD CONSTRAINT IF NOT EXISTS "roles-users_role_id_fkey" FOREIGN KEY (role_id) REFERENCES public.roles(id) ON DELETE CASCADE ON UPDATE CASCADE;
-    ALTER TABLE public."roles-users" ADD CONSTRAINT IF NOT EXISTS "roles-users_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    ALTER TABLE public."roles-users" DROP CONSTRAINT IF EXISTS "roles-users_role_id_fkey"  ;
+    ALTER TABLE public."roles-users" DROP CONSTRAINT IF EXISTS "roles-users_user_id_fkey" ;
+
+
+    ALTER TABLE public."roles-users" ADD CONSTRAINT "roles-users_role_id_fkey" FOREIGN KEY (role_id) REFERENCES public.roles(id) ON DELETE CASCADE ON UPDATE CASCADE;
+    ALTER TABLE public."roles-users" ADD CONSTRAINT "roles-users_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE ON UPDATE CASCADE;
 
     INSERT INTO public.users
     (id, email, first_name, last_name, "createdAt", "updatedAt")

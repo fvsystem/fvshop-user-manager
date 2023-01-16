@@ -31,7 +31,7 @@ const logger = new LoggerServiceWinton();
   const { server } = app;
 
   server.bindAsync(
-    `${config.domain.domain}:${config.grpc.port}`,
+    `0.0.0.0:${config.grpc.port}`,
     grpc.ServerCredentials.createInsecure(),
     (err, port) => {
       if (err) {

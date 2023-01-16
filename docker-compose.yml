@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  node:
+  user-manager-rest:
     build:
       context: .
       dockerfile: Dockerfile.express-sequelize
@@ -11,12 +11,30 @@ services:
       - postgres
     environment:
       NODE_ENV: production
+      WAIT_HOSTS: postgres:5432
     env_file:
       - .env
     networks:
       - app_network
     ports:
       - "3000:3000"
+  user-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile.grpc-sequelize
+      secrets:
+        - github_token
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: production
+      WAIT_HOSTS: postgres:5432
+    env_file:
+      - .env
+    networks:
+      - app_network
+    ports:
+      - "50051:50051"
   postgres:
     image: postgres
     environment:
@@ -31,6 +49,44 @@ services:
       - app_network
     ports:
       - "5432:5432"
+  credential:
+    image: ghcr.io/fvsystem/fvshop-identity-grpc-sequelize:0.2.7
+    depends_on:
+      - postgres-credential
+    environment:
+      NODE_ENV: production
+      WAIT_HOSTS: postgres-credential:5432
+    env_file:
+      - src/user/infrastructure/credential-facade/.env
+    networks:
+      - app_network
+  credential-rest:
+    image: ghcr.io/fvsystem/fvshop-identity-express-sequelize:0.2.7
+    depends_on:
+      - postgres-credential
+    environment:
+      NODE_ENV: production
+      WAIT_HOSTS: postgres-credential:5432
+    env_file:
+      - src/user/infrastructure/credential-facade/.env
+    networks:
+      - app_network
+    ports:
+      - '3001:3000'
+  postgres-credential:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: fvshop
+      POSTGRES_USER: ${DB_USERNAME}
+    env_file:
+      - src/user/infrastructure/credential-facade/.env
+    volumes:
+      - ./src/user/infrastructure/credential-facade/entrypoint.sh:/docker-entrypoint-initdb.d/10_postgis.sh
+    networks:
+      - app_network
+    ports:
+      - '5433:5432'
 networks:
   app_network:
     driver: bridge
