@@ -20,6 +20,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: cp .env.test.example .env.test
+      - run: cp key.private.example key.private
+      - run: cp key.public.example key.public
       - run: npm test
       - run: npm publish
         env:

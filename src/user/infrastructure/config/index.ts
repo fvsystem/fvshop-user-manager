@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 import { config as readEnv } from 'dotenv';
 import { join } from 'path';
+import { readFileSync } from 'node:fs';
 import { z } from 'zod';
 
 const envSchema = z.object({
@@ -12,7 +13,6 @@ const envSchema = z.object({
   DB_PASSWORD: z.string().optional(),
   DB_PORT: z.coerce.number().optional(),
   DB_USERNAME: z.string().optional(),
-  JWT_PUBLIC_KEY: z.string(),
   DOMAIN: z.string(),
   CREDENTIAL_DOMAIN: z.string(),
   CREDENTIAL_PORT: z.coerce.number(),
@@ -48,9 +48,13 @@ export type ConfigShared = {
 };
 
 export function makeConfigShared(envFile?: string): ConfigShared {
-  readEnv({ path: envFile, override: process.env.NODE_ENV === 'development' });
+  if (process.env.NODE_ENV !== 'production') {
+    readEnv({ path: envFile, override: true });
+  }
 
   const env = envSchema.parse(process.env);
+
+  const jwtPublicKey = readFileSync(join(process.cwd(), 'key.public'), 'utf8');
 
   return {
     nodeEnv: env.NODE_ENV,
@@ -76,7 +80,7 @@ export function makeConfigShared(envFile?: string): ConfigShared {
       username: env.DB_USERNAME,
     },
     jwt: {
-      publicKey: env.JWT_PUBLIC_KEY,
+      publicKey: jwtPublicKey,
     },
   };
 }
