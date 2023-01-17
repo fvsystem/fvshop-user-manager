@@ -48,13 +48,16 @@ export type ConfigShared = {
 };
 
 export function makeConfigShared(envFile?: string): ConfigShared {
+  const jwtPublicKey =
+    process.env.NODE_ENV === 'production'
+      ? readFileSync('/key/key.public', 'utf8')
+      : readFileSync(join(process.cwd(), 'key.public'), 'utf8');
+
   if (process.env.NODE_ENV !== 'production') {
     readEnv({ path: envFile, override: true });
   }
 
   const env = envSchema.parse(process.env);
-
-  const jwtPublicKey = readFileSync(join(process.cwd(), 'key.public'), 'utf8');
 
   return {
     nodeEnv: env.NODE_ENV,
